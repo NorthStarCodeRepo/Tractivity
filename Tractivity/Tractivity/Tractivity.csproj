@@ -15,11 +15,11 @@
 		<ApplicationTitle>Tractivity</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.tractivity</ApplicationId>
+		<ApplicationId>app.tractivity.tractivity</ApplicationId>
 		<ApplicationIdGuid>97c9fd63-c445-4689-99c4-9e2215cf0162</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
