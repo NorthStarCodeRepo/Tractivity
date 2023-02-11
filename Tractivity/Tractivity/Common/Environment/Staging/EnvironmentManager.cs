@@ -2,7 +2,7 @@
 {
     public partial class EnvironmentManager
     {
-#if DEBUG
+#if STAGING
 
         public string TestProp { get; set; } = "DEBUG";
 
