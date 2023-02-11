@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Tractivity.Common.Environment;
 using Tractivity.Managers;
 using Tractivity.Messaging;
 
@@ -6,6 +7,9 @@ namespace Tractivity;
 
 public partial class MainPage : ContentPage
 {
+    private readonly EnvironmentManager _environmentManager;
+    private readonly LocationManager _locationManager;
+
     //private CancellationTokenSource _cancelTokenSource;
 
     //private bool _isCheckingLocation;
@@ -14,12 +18,11 @@ public partial class MainPage : ContentPage
 
     //private bool isTracking = false;
 
-    private LocationManager locationManager;
-
-    public MainPage()
+    public MainPage(EnvironmentManager environmentManager, LocationManager locationManager)
     {
+        this._environmentManager = environmentManager;
+        this._locationManager = locationManager;
         InitializeComponent();
-        this.locationManager = new LocationManager();
         BindingContext = this;
     }
 
@@ -33,7 +36,7 @@ public partial class MainPage : ContentPage
             Text = "Logging started"
         });
 
-        this.locationManager.Initialize();
+        this._locationManager.Initialize();
 
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
         {
@@ -53,7 +56,7 @@ public partial class MainPage : ContentPage
         });
 
         string cacheDir = FileSystem.Current.CacheDirectory;
-        string fileName = $"records.txt";
+        string fileName = this._environmentManager.LogToFileName;
         if (File.Exists(Path.Combine(cacheDir, fileName)))
         {
             var lines = await File.ReadAllLinesAsync(Path.Combine(cacheDir, fileName));
@@ -99,7 +102,7 @@ public partial class MainPage : ContentPage
 
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
-        this.locationManager.Stop();
+        this._locationManager.Stop();
     }
 
     //private async void BeginLogging(object sender, EventArgs e)

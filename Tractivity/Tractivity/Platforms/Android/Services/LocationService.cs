@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Locations;
 using Android.OS;
 using AndroidX.Core.App;
+using Tractivity.Common.Environment;
 using Tractivity.Messaging;
 using AndroidApp = Android.App.Application;
 using Location = Android.Locations.Location;
@@ -17,6 +18,8 @@ namespace Tractivity.Platforms.Android.Services
     [Service]
     public partial class LocationService : Service, ILocationListener
     {
+        private readonly EnvironmentManager _environmentManager;
+
         private LocationManager _androidLocationManager;
 
         private string NOTIFICATION_CHANNEL_ID = "1000";
@@ -24,6 +27,11 @@ namespace Tractivity.Platforms.Android.Services
         private string NOTIFICATION_CHANNEL_NAME = "notification";
 
         private int NOTIFICATION_ID = 1;
+
+        public LocationService()
+        {
+            this._environmentManager = new EnvironmentManager();
+        }
 
         public override IBinder OnBind(Intent intent)
         {
@@ -36,6 +44,13 @@ namespace Tractivity.Platforms.Android.Services
             this.AndroidInitialize();
         }
 
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            _androidLocationManager?.RemoveUpdates(this);
+            StopSelf();
+        }
+
         public async void OnLocationChanged(Location location)
         {
             if (location != null)
@@ -44,11 +59,14 @@ namespace Tractivity.Platforms.Android.Services
                 try
                 {
                     string cacheDir = FileSystem.Current.CacheDirectory;
-                    string fileName = $"records.txt";
+                    string fileName = this._environmentManager.LogToFileName;
                     string targetFile = System.IO.Path.Combine(cacheDir, fileName);
+
+                    string fileCSVHeaderRow = $"Latitude,Longitude,Altitude,Bearing,Speed";
+
                     string[] locations =
                         {
-                            $"Lat {location.Latitude}, Long {location.Longitude}, Bearing {location.Bearing}, Speed {location.Speed}"
+                            $"{location.Latitude},{location.Longitude},{location.Altitude},{location.Bearing},{location.Speed}"
                         };
 
                     var message = new LocationUpdateEvent()
@@ -61,7 +79,13 @@ namespace Tractivity.Platforms.Android.Services
 
                     if (!File.Exists(targetFile))
                     {
-                        await File.WriteAllLinesAsync(targetFile, locations);
+                        string[] locationsWithHeaderRow =
+                        {
+                            fileCSVHeaderRow,
+                            locations[0]
+                        };
+
+                        await File.WriteAllLinesAsync(targetFile, locationsWithHeaderRow);
                     }
                     else
                     {
@@ -100,8 +124,8 @@ namespace Tractivity.Platforms.Android.Services
                 .SetAutoCancel(false)
                 .SetOngoing(true)
                 .SetSmallIcon(Resource.Drawable.navigation_empty_icon)
-                .SetContentTitle("ForegroundService")
-                .SetContentText("Foreground Service is running")
+                .SetContentTitle("Tractivity")
+                .SetContentText("Tractivity recording in progress.")
                 .Build();
 
             StartForeground(NOTIFICATION_ID, notification);
@@ -139,13 +163,6 @@ namespace Tractivity.Platforms.Android.Services
 
                 _androidLocationManager.RequestLocationUpdates(LocationManager.GpsProvider, 2000, 4, this);
             });
-        }
-
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            _androidLocationManager?.RemoveUpdates(this);
-            StopSelf();
         }
 
         private void CreateNotificationChannel(NotificationManager notificationMnaManager)
