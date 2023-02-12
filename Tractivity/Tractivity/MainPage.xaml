@@ -1,36 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:Tractivity.Helpers"
              x:Class="Tractivity.MainPage">
 
-    <ScrollView>
-        <StackLayout>
-            <Grid Margin="20" ColumnDefinitions="*,*,*,*">
-                <Button Text="Start" Grid.Row="1" Grid.Column="0"
-                    Clicked="BeginWatchingPosition"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center" />
-                <Button Text="Stop" Grid.Row="1" Grid.Column="1"
-                    Clicked="StopWatchingPosition"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center" />
-                <Button Text="Reset" Grid.Row="1" Grid.Column="2"
-                    Clicked="ResetPositions"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center" />
-                <Button Text="View" Grid.Row="1" Grid.Column="3"
-                    Clicked="ReadAllRecords"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center" />
-            </Grid>
-            <VerticalStackLayout FlexLayout.Grow="1" BindableLayout.ItemsSource="{Binding Locations}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <Label Text="{Binding Text}"></Label>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </VerticalStackLayout>
-        </StackLayout>
-    </ScrollView>
-
+    <StackLayout>
+        <Grid 
+            RowDefinitions="1*, 1*"
+            ColumnDefinitions="1*,1*"
+            RowSpacing="10"
+            ColumnSpacing="6"
+            Padding="10"
+            BackgroundColor="LightGray">
+            <Button
+                Text="Start"
+                FontAttributes="Bold"
+                Grid.Row="0"
+                Grid.Column="0"
+                Clicked="BeginWatchingPosition"
+                VerticalOptions="Center"
+                HorizontalOptions="Fill"
+                Padding="50,10,50,10"
+                MaximumWidthRequest="100">
+                <Button.ImageSource>
+                    <FontImageSource
+                            FontFamily="MaterialIcons"
+                            Glyph="{x:Static helpers:IconFont.Play_arrow}"
+                            Size="25" />
+                </Button.ImageSource>
+            </Button>
+            <Button 
+                Text="Stop"
+                FontAttributes="Bold"
+                Grid.Row="0" 
+                Grid.Column="1"
+                Clicked="StopWatchingPosition"
+                VerticalOptions="Center"
+                HorizontalOptions="Fill"
+                Padding="50,10,50,10"
+                MaximumWidthRequest="100">
+                <Button.ImageSource>
+                    <FontImageSource
+                            FontFamily="MaterialIcons"
+                            Glyph="{x:Static helpers:IconFont.Stop}"
+                            Size="25" />
+                </Button.ImageSource>
+            </Button>
+            <Button 
+                Text="Reset" 
+                FontAttributes="Bold"
+                Grid.Row="1"
+                Grid.Column="0"
+                Clicked="ResetPositions"
+                VerticalOptions="Center"
+                HorizontalOptions="Fill"
+                Padding="50,10,50,10"
+                MaximumWidthRequest="100">
+                <Button.ImageSource>
+                    <FontImageSource
+                            FontFamily="MaterialIcons"
+                            Glyph="{x:Static helpers:IconFont.Delete}"
+                            Size="25" />
+                </Button.ImageSource>
+            </Button>
+            <Button 
+                Text="View" 
+                FontAttributes="Bold"
+                Grid.Row="1" 
+                Grid.Column="1"
+                Clicked="ReadAllRecords"
+                VerticalOptions="Center"
+                HorizontalOptions="Fill"
+                Padding="50,10,50,10"
+                MaximumWidthRequest="100">
+                <Button.ImageSource>
+                    <FontImageSource
+                            FontFamily="MaterialIcons"
+                            Glyph="{x:Static helpers:IconFont.Read_more}"
+                            Size="25" />
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+        <ScrollView>
+            <StackLayout>
+                <VerticalStackLayout 
+                    FlexLayout.Grow="1" 
+                    BindableLayout.ItemsSource="{Binding Locations}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Label
+                                Padding="10"
+                                Text="{Binding Text}"></Label>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
 </ContentPage>

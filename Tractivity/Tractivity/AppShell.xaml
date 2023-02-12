@@ -8,10 +8,16 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <Tab Title="Home">
+        <Tab
+            Title="Home"
+            Route="MainPage"
+            Icon="home_icon.png">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>
-        <Tab Title="Export">
+        <Tab
+            Title="Export"
+            Route="ExportLogs"
+            Icon="attach_email.png">
             <ShellContent ContentTemplate="{DataTemplate views:ExportLogsView}" />
         </Tab>
     </TabBar>

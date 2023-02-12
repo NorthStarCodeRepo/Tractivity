@@ -8,10 +8,13 @@
             Text="Export Logged Data"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Entry
-            x:Name="recipientEmail"
-            Placeholder="Email address"
-            ClearButtonVisibility="WhileEditing" />
+        <Grid 
+            Padding="20">
+            <Entry
+                x:Name="recipientEmail"
+                Placeholder="Email address"
+                ClearButtonVisibility="WhileEditing"/>
+        </Grid>
         <Button
             Text="Submit"
             Clicked="SubmitForm"></Button>
