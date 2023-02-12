@@ -2,17 +2,19 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:Tractivity.Helpers"
-             x:Class="Tractivity.MainPage">
-
-    <StackLayout>
-        <Grid 
+             x:Class="Tractivity.MainPage"
+             IconImageSource="home_icon.png"
+             Title="Home">
+    <ScrollView>
+        <StackLayout>
+            <Grid
             RowDefinitions="1*, 1*"
             ColumnDefinitions="1*,1*"
             RowSpacing="10"
             ColumnSpacing="6"
             Padding="10"
             BackgroundColor="LightGray">
-            <Button
+                <Button
                 Text="Start"
                 FontAttributes="Bold"
                 Grid.Row="0"
@@ -22,32 +24,32 @@
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                <Button.ImageSource>
-                    <FontImageSource
+                    <Button.ImageSource>
+                        <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Play_arrow}"
                             Size="25" />
-                </Button.ImageSource>
-            </Button>
-            <Button 
+                    </Button.ImageSource>
+                </Button>
+                <Button
                 Text="Stop"
                 FontAttributes="Bold"
-                Grid.Row="0" 
+                Grid.Row="0"
                 Grid.Column="1"
                 Clicked="StopWatchingPosition"
                 VerticalOptions="Center"
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                <Button.ImageSource>
-                    <FontImageSource
+                    <Button.ImageSource>
+                        <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Stop}"
                             Size="25" />
-                </Button.ImageSource>
-            </Button>
-            <Button 
-                Text="Reset" 
+                    </Button.ImageSource>
+                </Button>
+                <Button
+                Text="Reset"
                 FontAttributes="Bold"
                 Grid.Row="1"
                 Grid.Column="0"
@@ -56,35 +58,45 @@
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                <Button.ImageSource>
-                    <FontImageSource
+                    <Button.ImageSource>
+                        <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Delete}"
                             Size="25" />
-                </Button.ImageSource>
-            </Button>
-            <Button 
-                Text="View" 
+                    </Button.ImageSource>
+                </Button>
+                <Button
+                Text="View"
                 FontAttributes="Bold"
-                Grid.Row="1" 
+                Grid.Row="1"
                 Grid.Column="1"
                 Clicked="ReadAllRecords"
                 VerticalOptions="Center"
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                <Button.ImageSource>
-                    <FontImageSource
+                    <Button.ImageSource>
+                        <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Read_more}"
                             Size="25" />
-                </Button.ImageSource>
-            </Button>
-        </Grid>
-        <ScrollView>
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
             <StackLayout>
-                <VerticalStackLayout 
-                    FlexLayout.Grow="1" 
+                <Label
+                x:Name="ActivityMessage"
+                Padding="10"></Label>
+                <Label
+                Text="Total Logged Locations"
+                Padding="10"></Label>
+                <Label
+                x:Name="TotalLogCount"
+                Padding="10"></Label>
+            </StackLayout>
+            <StackLayout>
+                <VerticalStackLayout
+                    FlexLayout.Grow="1"
                     BindableLayout.ItemsSource="{Binding Locations}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
@@ -95,6 +107,6 @@
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
             </StackLayout>
-        </ScrollView>
-    </StackLayout>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

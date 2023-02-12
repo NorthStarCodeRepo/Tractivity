@@ -2,12 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Tractivity.Views.ExportLogsView"
-             Title="ExportLogsView">
+             Title="Export Logs">
     <VerticalStackLayout>
         <Label 
             Text="Export Logged Data"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            HorizontalOptions="Center"
+            FontSize="18"
+            Padding="10"/>
         <Grid 
             Padding="20">
             <Entry
@@ -15,8 +17,11 @@
                 Placeholder="Email address"
                 ClearButtonVisibility="WhileEditing"/>
         </Grid>
-        <Button
-            Text="Submit"
-            Clicked="SubmitForm"></Button>
+        <Grid
+            Padding="10">
+            <Button
+                Text="Submit"
+                Clicked="SubmitForm"></Button>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

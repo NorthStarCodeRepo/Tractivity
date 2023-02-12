@@ -9,6 +9,7 @@ public partial class MainPage : ContentPage
 {
     private readonly EnvironmentManager _environmentManager;
     private readonly LocationManager _locationManager;
+    private int totalLogCounter = 0;
 
     //private CancellationTokenSource _cancelTokenSource;
 
@@ -24,6 +25,32 @@ public partial class MainPage : ContentPage
         this._locationManager = locationManager;
         InitializeComponent();
         BindingContext = this;
+
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
+        this.Locations.Add(new Label() { Text = "Test" });
     }
 
     public ObservableCollection<Label> Locations { get; private set; } = new ObservableCollection<Label>();
@@ -31,15 +58,15 @@ public partial class MainPage : ContentPage
     public void BeginWatchingPosition(object sender, EventArgs e)
     {
         this.Locations.Clear();
-        this.Locations.Add(new Label()
-        {
-            Text = "Logging started"
-        });
+        
+        this.ActivityMessage.Text = "Logging Started";
 
         this._locationManager.Initialize();
 
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
         {
+            this.totalLogCounter += 1;
+            this.TotalLogCount.Text = this.totalLogCounter.ToString();
             this.Locations.Add(new Label()
             {
                 Text = update.Value
@@ -50,10 +77,8 @@ public partial class MainPage : ContentPage
     public async void ReadAllRecords(object sender, EventArgs e)
     {
         this.Locations.Clear();
-        this.Locations.Add(new Label()
-        {
-            Text = "Loading locations..."
-        });
+
+        this.ActivityMessage.Text = "Loading Logs";
 
         string cacheDir = FileSystem.Current.CacheDirectory;
         string fileName = this._environmentManager.LogToFileName;
@@ -72,12 +97,11 @@ public partial class MainPage : ContentPage
 
     public async void ResetPositions(object sender, EventArgs e)
     {
-        this.Locations.Add(new Label()
-        {
-            Text = "Locations cleared"
-        });
-
         this.Locations.Clear();
+        this.ActivityMessage.Text = "All logged data cleared.";
+        this.totalLogCounter = 0;
+        this.TotalLogCount.Text = this.totalLogCounter.ToString();
+
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
         string cacheDir = FileSystem.Current.CacheDirectory;
@@ -95,10 +119,7 @@ public partial class MainPage : ContentPage
 
     public void StopWatchingPosition(object sender, EventArgs e)
     {
-        this.Locations.Add(new Label()
-        {
-            Text = "Logging stopped"
-        });
+        this.ActivityMessage.Text = "Logging Stopped";
 
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
