@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:Tractivity.Helpers"
              x:Class="Tractivity.MainPage"
-             IconImageSource="home_icon.png"
              Title="Home">
     <ScrollView>
         <StackLayout>
@@ -28,7 +27,7 @@
                         <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Play_arrow}"
-                            Size="25" />
+                            Size="25"/>
                     </Button.ImageSource>
                 </Button>
                 <Button

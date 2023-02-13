@@ -25,32 +25,6 @@ public partial class MainPage : ContentPage
         this._locationManager = locationManager;
         InitializeComponent();
         BindingContext = this;
-
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
-        this.Locations.Add(new Label() { Text = "Test" });
     }
 
     public ObservableCollection<Label> Locations { get; private set; } = new ObservableCollection<Label>();
