@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Tractivity.Views.ExportLogsView"
+             Title="Export Logs">
+    <VerticalStackLayout>
+        <Label 
+            Text="Export Logged Data"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            FontSize="18"
+            Padding="10"/>
+        <Grid 
+            Padding="20">
+            <Entry
+                x:Name="recipientEmail"
+                Placeholder="Email address"
+                ClearButtonVisibility="WhileEditing"/>
+        </Grid>
+        <Grid
+            Padding="10">
+            <Button
+                Text="Submit"
+                Clicked="SubmitForm"></Button>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

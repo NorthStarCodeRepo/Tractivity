@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Tractivity.Common.Environment;
 using Tractivity.Managers;
 using Tractivity.Messaging;
 
@@ -6,6 +7,10 @@ namespace Tractivity;
 
 public partial class MainPage : ContentPage
 {
+    private readonly EnvironmentManager _environmentManager;
+    private readonly LocationManager _locationManager;
+    private int totalLogCounter = 0;
+
     //private CancellationTokenSource _cancelTokenSource;
 
     //private bool _isCheckingLocation;
@@ -14,12 +19,11 @@ public partial class MainPage : ContentPage
 
     //private bool isTracking = false;
 
-    private LocationManager locationManager;
-
-    public MainPage()
+    public MainPage(EnvironmentManager environmentManager, LocationManager locationManager)
     {
+        this._environmentManager = environmentManager;
+        this._locationManager = locationManager;
         InitializeComponent();
-        this.locationManager = new LocationManager();
         BindingContext = this;
     }
 
@@ -28,15 +32,15 @@ public partial class MainPage : ContentPage
     public void BeginWatchingPosition(object sender, EventArgs e)
     {
         this.Locations.Clear();
-        this.Locations.Add(new Label()
-        {
-            Text = "Logging started"
-        });
+        
+        this.ActivityMessage.Text = "Logging Started";
 
-        this.locationManager.Initialize();
+        this._locationManager.Initialize();
 
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
         {
+            this.totalLogCounter += 1;
+            this.TotalLogCount.Text = this.totalLogCounter.ToString();
             this.Locations.Add(new Label()
             {
                 Text = update.Value
@@ -47,13 +51,11 @@ public partial class MainPage : ContentPage
     public async void ReadAllRecords(object sender, EventArgs e)
     {
         this.Locations.Clear();
-        this.Locations.Add(new Label()
-        {
-            Text = "Loading locations..."
-        });
+
+        this.ActivityMessage.Text = "Loading Logs";
 
         string cacheDir = FileSystem.Current.CacheDirectory;
-        string fileName = $"records.txt";
+        string fileName = this._environmentManager.LogToFileName;
         if (File.Exists(Path.Combine(cacheDir, fileName)))
         {
             var lines = await File.ReadAllLinesAsync(Path.Combine(cacheDir, fileName));
@@ -69,12 +71,11 @@ public partial class MainPage : ContentPage
 
     public async void ResetPositions(object sender, EventArgs e)
     {
-        this.Locations.Add(new Label()
-        {
-            Text = "Locations cleared"
-        });
-
         this.Locations.Clear();
+        this.ActivityMessage.Text = "All logged data cleared.";
+        this.totalLogCounter = 0;
+        this.TotalLogCount.Text = this.totalLogCounter.ToString();
+
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
         string cacheDir = FileSystem.Current.CacheDirectory;
@@ -92,14 +93,11 @@ public partial class MainPage : ContentPage
 
     public void StopWatchingPosition(object sender, EventArgs e)
     {
-        this.Locations.Add(new Label()
-        {
-            Text = "Logging stopped"
-        });
+        this.ActivityMessage.Text = "Logging Stopped";
 
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
-        this.locationManager.Stop();
+        this._locationManager.Stop();
     }
 
     //private async void BeginLogging(object sender, EventArgs e)

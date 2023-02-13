@@ -1,6 +1,6 @@
 ﻿namespace Tractivity.Common.Environment
 {
-    public partial class EnvironmentManager
+    public partial class EnvironmentManager : BaseEnvironmentManager
     {
 #if RELEASE
 
