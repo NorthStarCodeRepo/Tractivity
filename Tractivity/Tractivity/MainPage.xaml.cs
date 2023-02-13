@@ -79,7 +79,7 @@ public partial class MainPage : ContentPage
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
         string cacheDir = FileSystem.Current.CacheDirectory;
-        string fileName = $"records.txt";
+        string fileName = this._environmentManager.LogToFileName;
         if (File.Exists(Path.Combine(cacheDir, fileName)))
         {
             File.Delete(Path.Combine(cacheDir, fileName));
