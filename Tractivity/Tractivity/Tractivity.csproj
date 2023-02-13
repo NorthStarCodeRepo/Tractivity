@@ -50,22 +50,40 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\SailingView.xaml.cs">
+	    <DependentUpon>SailingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SkiingView.xaml.cs">
+	    <DependentUpon>SkiingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SnowboardingView.xaml.cs">
+	    <DependentUpon>SnowboardingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SnowshoeingView.xaml.cs">
+	    <DependentUpon>SnowshoeingView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\ExportLogsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\HikingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Sailing.xaml">
+	  <MauiXaml Update="Views\SailingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Skiing.xaml">
+	  <MauiXaml Update="Views\SkiingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Snowboarding.xaml">
+	  <MauiXaml Update="Views\SnowboardingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Snowshoeing.xaml">
+	  <MauiXaml Update="Views\SnowshoeingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\WalkingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

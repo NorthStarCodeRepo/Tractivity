@@ -27,7 +27,7 @@
         Route="Sailing"
         Icon="sailing_icon.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate views:Sailing}" />
+            <ShellContent ContentTemplate="{DataTemplate views:SailingView}" />
         </Tab>
     </FlyoutItem>
     <FlyoutItem
@@ -35,7 +35,7 @@
         Route="Skiing"
         Icon="skiing_icon.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate views:Skiing}" />
+            <ShellContent ContentTemplate="{DataTemplate views:SkiingView}" />
         </Tab>
     </FlyoutItem>
     <FlyoutItem
@@ -43,7 +43,7 @@
         Route="Snowboarding"
         Icon="snowboarding_icon.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate views:Snowboarding}" />
+            <ShellContent ContentTemplate="{DataTemplate views:SnowboardingView}" />
         </Tab>
     </FlyoutItem>
     <FlyoutItem
@@ -51,7 +51,15 @@
         Route="Snowshoeing"
         Icon="snowshoeing_icon.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate views:Snowshoeing}" />
+            <ShellContent ContentTemplate="{DataTemplate views:SnowshoeingView}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Walking"
+        Route="Walking"
+        Icon="walking_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:WalkingView}" />
         </Tab>
     </FlyoutItem>
     <FlyoutItem

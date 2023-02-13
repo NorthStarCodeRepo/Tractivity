@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Hardware;
 using Android.Locations;
 using Android.OS;
 using AndroidX.Core.App;
@@ -21,6 +22,7 @@ namespace Tractivity.Platforms.Android.Services
         private readonly EnvironmentManager _environmentManager;
 
         private LocationManager _androidLocationManager;
+        private SensorManager _androidSensorManager;
 
         private string NOTIFICATION_CHANNEL_ID = "1000";
 
@@ -93,6 +95,9 @@ namespace Tractivity.Platforms.Android.Services
                         using StreamWriter streamWriter = new StreamWriter(targetFile, append: true);
                         await streamWriter.WriteLineAsync(locations[0]);
                     }
+
+                    Sensor sensor = this._androidSensorManager.GetDefaultSensor(SensorType.Gravity);
+                    this._androidSensorManager.Re
                 }
                 catch (Exception e)
                 {
@@ -140,7 +145,8 @@ namespace Tractivity.Platforms.Android.Services
 
         protected void AndroidInitialize()
         {
-            _androidLocationManager ??= (LocationManager)AndroidApp.Context.GetSystemService(Context.LocationService);
+            this._androidLocationManager ??= (LocationManager)AndroidApp.Context.GetSystemService(Context.LocationService);
+            this._androidSensorManager ??= (SensorManager)AndroidApp.Context.GetSystemService(Context.SensorService);
 
             MainThread.BeginInvokeOnMainThread(async () =>
             {
