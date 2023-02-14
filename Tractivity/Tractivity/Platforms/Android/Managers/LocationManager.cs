@@ -1,4 +1,4 @@
-﻿using Tractivity.Platforms.Android.Services;
+﻿using Tractivity.Platforms.Android.AppServices;
 
 namespace Tractivity.Managers
 {

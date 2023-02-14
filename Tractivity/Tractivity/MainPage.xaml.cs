@@ -8,7 +8,9 @@ namespace Tractivity;
 public partial class MainPage : ContentPage
 {
     private readonly EnvironmentManager _environmentManager;
+
     private readonly LocationManager _locationManager;
+
     private int totalLogCounter = 0;
 
     //private CancellationTokenSource _cancelTokenSource;
@@ -32,11 +34,12 @@ public partial class MainPage : ContentPage
     public void BeginWatchingPosition(object sender, EventArgs e)
     {
         this.Locations.Clear();
-        
+
         this.ActivityMessage.Text = "Logging Started";
 
         this._locationManager.Initialize();
 
+        // Subscribe to location updates
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
         {
             this.totalLogCounter += 1;
@@ -45,6 +48,11 @@ public partial class MainPage : ContentPage
             {
                 Text = update.Value
             });
+        });
+
+        MessagingCenter.Subscribe<StepDetectorUpdateEvent>(this, "step-detector-updates", (update) =>
+        {
+            this.StepDetectorMessage.Text = $"{update.Value}";
         });
     }
 

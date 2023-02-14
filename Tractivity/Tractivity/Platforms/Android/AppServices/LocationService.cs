@@ -3,13 +3,14 @@ using Android.Content;
 using Android.Hardware;
 using Android.Locations;
 using Android.OS;
+using Android.Runtime;
 using AndroidX.Core.App;
 using Tractivity.Common.Environment;
 using Tractivity.Messaging;
 using AndroidApp = Android.App.Application;
 using Location = Android.Locations.Location;
 
-namespace Tractivity.Platforms.Android.Services
+namespace Tractivity.Platforms.Android.AppServices
 {
     /// <summary>
     /// https://medium.com/nerd-for-tech/maui-native-mobile-location-updates-444939dff3af
@@ -17,12 +18,17 @@ namespace Tractivity.Platforms.Android.Services
     /// https://stackoverflow.com/questions/71259615/how-to-create-a-background-service-in-net-maui
     /// </summary>
     [Service]
-    public partial class LocationService : Service, ILocationListener
+    public partial class LocationService : Service, ILocationListener, ISensorEventListener
     {
         private readonly EnvironmentManager _environmentManager;
 
         private LocationManager _androidLocationManager;
+
+        private Sensor _androidSensor;
+
         private SensorManager _androidSensorManager;
+
+        private int _totalSteps = 0;
 
         private string NOTIFICATION_CHANNEL_ID = "1000";
 
@@ -33,6 +39,11 @@ namespace Tractivity.Platforms.Android.Services
         public LocationService()
         {
             this._environmentManager = new EnvironmentManager();
+        }
+
+        public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
+        {
+            // Not worried about this right now
         }
 
         public override IBinder OnBind(Intent intent)
@@ -49,7 +60,8 @@ namespace Tractivity.Platforms.Android.Services
         public override void OnDestroy()
         {
             base.OnDestroy();
-            _androidLocationManager?.RemoveUpdates(this);
+            this._androidLocationManager?.RemoveUpdates(this);
+            this._androidSensorManager?.UnregisterListener(this);
             StopSelf();
         }
 
@@ -95,9 +107,6 @@ namespace Tractivity.Platforms.Android.Services
                         using StreamWriter streamWriter = new StreamWriter(targetFile, append: true);
                         await streamWriter.WriteLineAsync(locations[0]);
                     }
-
-                    Sensor sensor = this._androidSensorManager.GetDefaultSensor(SensorType.Gravity);
-                    this._androidSensorManager.Re
                 }
                 catch (Exception e)
                 {
@@ -114,6 +123,24 @@ namespace Tractivity.Platforms.Android.Services
         public void OnProviderEnabled(string provider)
         {
             // Nothing
+        }
+
+        public void OnSensorChanged(SensorEvent e)
+        {
+            if (e.Sensor.Type == SensorType.StepDetector)
+            {
+                // Add a step
+                this._totalSteps++;
+
+                var message = new StepDetectorUpdateEvent()
+                {
+                    Value = this._totalSteps
+                };
+
+                // Publish a message to any listeners
+                // NOTE: This is extremely non performant. Improve later.
+                MessagingCenter.Send(message, "step-detector-updates");
+            }
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
@@ -168,6 +195,9 @@ namespace Tractivity.Platforms.Android.Services
                 }
 
                 _androidLocationManager.RequestLocationUpdates(LocationManager.GpsProvider, 2000, 4, this);
+
+                this._androidSensor = this._androidSensorManager.GetDefaultSensor(SensorType.StepDetector);
+                this._androidSensorManager.RegisterListener(this, this._androidSensor, SensorDelay.Normal);
             });
         }
 

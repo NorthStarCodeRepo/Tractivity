@@ -27,7 +27,7 @@
                         <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Play_arrow}"
-                            Size="25"/>
+                            Size="25" />
                     </Button.ImageSource>
                 </Button>
                 <Button
@@ -86,6 +86,14 @@
                 <Label
                 x:Name="ActivityMessage"
                 Padding="10"></Label>
+                <Label
+                    Text="Total Steps"
+                    Padding="10">
+                </Label>
+                <Label
+                    x:Name="StepDetectorMessage"
+                    Padding="10">
+                </Label>
                 <Label
                 Text="Total Logged Locations"
                 Padding="10"></Label>
