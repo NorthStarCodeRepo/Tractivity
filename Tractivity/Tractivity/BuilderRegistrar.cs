@@ -10,7 +10,7 @@ namespace Tractivity
         {
             // Register DI
             builder.Services.AddSingleton<EnvironmentManager>();
-            builder.Services.AddTransient<LocationManager>();
+            builder.Services.AddTransient<LocationManagerFactory>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<ExportLogsView>();
         }

@@ -2,6 +2,7 @@
 using Tractivity.Common.Environment;
 using Tractivity.Managers;
 using Tractivity.Messaging;
+using Tractivity.Contract.Enums;
 
 namespace Tractivity;
 
@@ -9,7 +10,7 @@ public partial class MainPage : ContentPage
 {
     private readonly EnvironmentManager _environmentManager;
 
-    private readonly LocationManager _locationManager;
+    private readonly LocationManagerFactory _locationManagerFactory;
 
     private int totalLogCounter = 0;
 
@@ -21,10 +22,10 @@ public partial class MainPage : ContentPage
 
     //private bool isTracking = false;
 
-    public MainPage(EnvironmentManager environmentManager, LocationManager locationManager)
+    public MainPage(EnvironmentManager environmentManager, LocationManagerFactory locationManager)
     {
         this._environmentManager = environmentManager;
-        this._locationManager = locationManager;
+        this._locationManagerFactory = locationManager;
         InitializeComponent();
         BindingContext = this;
     }
@@ -37,7 +38,7 @@ public partial class MainPage : ContentPage
 
         this.ActivityMessage.Text = "Logging Started";
 
-        this._locationManager.Initialize();
+        this._locationManagerFactory.Initialize(ServiceType.Walking);
 
         // Subscribe to location updates
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
@@ -105,7 +106,7 @@ public partial class MainPage : ContentPage
 
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
-        this._locationManager.Stop();
+        this._locationManagerFactory.Stop(ServiceType.Walking);
     }
 
     //private async void BeginLogging(object sender, EventArgs e)
