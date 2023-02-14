@@ -2,7 +2,7 @@
 
 namespace Tractivity.Managers
 {
-    public partial class LocationManagerFactory
+    public partial class LocationManagerFactory : ILocationManagerFactory
     {
         public partial void Initialize(ServiceType serviceType)
         {

@@ -10,7 +10,7 @@ public partial class MainPage : ContentPage
 {
     private readonly EnvironmentManager _environmentManager;
 
-    private readonly LocationManagerFactory _locationManagerFactory;
+    private readonly ILocationManagerFactory _locationManagerFactory;
 
     private int totalLogCounter = 0;
 
@@ -22,7 +22,7 @@ public partial class MainPage : ContentPage
 
     //private bool isTracking = false;
 
-    public MainPage(EnvironmentManager environmentManager, LocationManagerFactory locationManager)
+    public MainPage(EnvironmentManager environmentManager, ILocationManagerFactory locationManager)
     {
         this._environmentManager = environmentManager;
         this._locationManagerFactory = locationManager;

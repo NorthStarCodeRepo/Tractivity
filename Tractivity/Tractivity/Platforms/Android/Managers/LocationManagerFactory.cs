@@ -5,9 +5,9 @@ using Tractivity.Platforms.Android.AppServices;
 
 namespace Tractivity.Managers
 {
-    public partial class LocationManagerFactory
+    public partial class LocationManagerFactory : ILocationManagerFactory
     {
-        public partial void Initialize(ServiceType serviceType)
+        public void Initialize(ServiceType serviceType)
         {
             if (serviceType.Equals(ServiceType.Walking))
             {
@@ -15,7 +15,7 @@ namespace Tractivity.Managers
             }
         }
 
-        public partial void Stop(ServiceType serviceType)
+        public void Stop(ServiceType serviceType)
         {
             if (serviceType.Equals(ServiceType.Walking))
             {
