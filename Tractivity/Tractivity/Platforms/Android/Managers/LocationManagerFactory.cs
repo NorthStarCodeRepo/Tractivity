@@ -1,17 +1,16 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
+using Tractivity.AppServices;
 using Tractivity.Contract.Enums;
-using Tractivity.Platforms.Android.AppServices;
 
 namespace Tractivity.Managers
 {
-    public partial class LocationManagerFactory : ILocationManagerFactory
+    public class LocationManagerFactory : ILocationManagerFactory
     {
         public void Initialize(ServiceType serviceType)
         {
             if (serviceType.Equals(ServiceType.Walking))
             {
-                this.StartService<LocationService>();
+                this.StartService<WalkingService>();
             }
         }
 
@@ -19,11 +18,11 @@ namespace Tractivity.Managers
         {
             if (serviceType.Equals(ServiceType.Walking))
             {
-                this.StopService<LocationService>();
+                this.StopService<WalkingService>();
             }
         }
 
-        private void StartService<TService>() where TService : Service
+        private void StartService<TService>()
         {
             Intent intent = new Intent(Android.App.Application.Context, typeof(TService));
 
@@ -37,7 +36,7 @@ namespace Tractivity.Managers
             }
         }
 
-        private void StopService<TService>() where TService : Service
+        private void StopService<TService>()
         {
             Intent intent = new Intent(Android.App.Application.Context, typeof(TService));
             Android.App.Application.Context.StopService(intent);

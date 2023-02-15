@@ -10,25 +10,18 @@ using Tractivity.Messaging;
 using AndroidApp = Android.App.Application;
 using Location = Android.Locations.Location;
 
-namespace Tractivity.Platforms.Android.AppServices
+namespace Tractivity.AppServices
 {
     /// <summary>
     /// https://medium.com/nerd-for-tech/maui-native-mobile-location-updates-444939dff3af
     /// https://stackoverflow.com/questions/73829758/how-to-create-an-android-foreground-service-in-maui
     /// https://stackoverflow.com/questions/71259615/how-to-create-a-background-service-in-net-maui
     /// </summary>
-    [Service]
-    public partial class LocationService : Service, ILocationListener, ISensorEventListener
+    public class LocationService : Service, ILocationService, ILocationListener
     {
         private readonly EnvironmentManager _environmentManager;
 
         private LocationManager _androidLocationManager;
-
-        private Sensor _androidSensor;
-
-        private SensorManager _androidSensorManager;
-
-        private int _totalSteps = 0;
 
         private string NOTIFICATION_CHANNEL_ID = "1000";
 
@@ -41,11 +34,6 @@ namespace Tractivity.Platforms.Android.AppServices
             this._environmentManager = new EnvironmentManager();
         }
 
-        public void OnAccuracyChanged(Sensor sensor, [GeneratedEnum] SensorStatus accuracy)
-        {
-            // Not worried about this right now
-        }
-
         public override IBinder OnBind(Intent intent)
         {
             return null;
@@ -54,14 +42,14 @@ namespace Tractivity.Platforms.Android.AppServices
         public override void OnCreate()
         {
             base.OnCreate();
-            this.AndroidInitialize();
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
             this._androidLocationManager?.RemoveUpdates(this);
-            this._androidSensorManager?.UnregisterListener(this);
+            
+            // Kill the running service.
             StopSelf();
         }
 
@@ -125,24 +113,6 @@ namespace Tractivity.Platforms.Android.AppServices
             // Nothing
         }
 
-        public void OnSensorChanged(SensorEvent e)
-        {
-            if (e.Sensor.Type == SensorType.StepDetector)
-            {
-                // Add a step
-                this._totalSteps++;
-
-                var message = new StepDetectorUpdateEvent()
-                {
-                    Value = this._totalSteps
-                };
-
-                // Publish a message to any listeners
-                // NOTE: This is extremely non performant. Improve later.
-                MessagingCenter.Send(message, "step-detector-updates");
-            }
-        }
-
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             var notifcationManager = GetSystemService(Context.NotificationService) as NotificationManager;
@@ -170,11 +140,10 @@ namespace Tractivity.Platforms.Android.AppServices
             // Nothing
         }
 
-        protected void AndroidInitialize()
+        protected void Initialize(long minTimeMs, float minDistanceM)
         {
             this._androidLocationManager ??= (LocationManager)AndroidApp.Context.GetSystemService(Context.LocationService);
-            this._androidSensorManager ??= (SensorManager)AndroidApp.Context.GetSystemService(Context.SensorService);
-
+            
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
@@ -194,10 +163,7 @@ namespace Tractivity.Platforms.Android.AppServices
                     return;
                 }
 
-                _androidLocationManager.RequestLocationUpdates(LocationManager.GpsProvider, 2000, 4, this);
-
-                this._androidSensor = this._androidSensorManager.GetDefaultSensor(SensorType.StepDetector);
-                this._androidSensorManager.RegisterListener(this, this._androidSensor, SensorDelay.Normal);
+                _androidLocationManager.RequestLocationUpdates(LocationManager.GpsProvider, minTimeMs, minDistanceM, this);
             });
         }
 

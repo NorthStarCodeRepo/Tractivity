@@ -50,6 +50,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Platforms\iOS\AppServices\WalkingService.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	  <Compile Update="Views\SailingView.xaml.cs">
 	    <DependentUpon>SailingView.xaml</DependentUpon>
 	  </Compile>
