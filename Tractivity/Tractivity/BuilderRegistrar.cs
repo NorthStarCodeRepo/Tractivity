@@ -15,6 +15,7 @@ namespace Tractivity
             builder.Services.AddTransient<ILocationService, LocationService>();
             builder.Services.AddSingleton<WalkingService>();
             builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<WalkingView>();
             builder.Services.AddTransient<ExportLogsView>();
         }
     }
