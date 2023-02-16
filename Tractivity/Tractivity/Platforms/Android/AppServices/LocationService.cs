@@ -31,6 +31,8 @@ namespace Tractivity.AppServices
 
         public LocationService()
         {
+            // Not ideal to new this up but haven't found a good way 
+            // to sort out some DI issues with base services.
             this._environmentManager = new EnvironmentManager();
         }
 
