@@ -349,3 +349,7 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /Tractivity/Tractivity/tractivity.keystore
+
+# Hide Actual AndroidManifest
+**/*/Tractivity/Tractivity/AndroidManifest.xml
+/Tractivity/Tractivity/Platforms/Android/AndroidManifest.xml
