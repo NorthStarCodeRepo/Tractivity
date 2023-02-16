@@ -17,6 +17,7 @@ public static class MauiProgram
                 // https://cedricgabrang.medium.com/custom-fonts-material-design-icons-in-net-maui-acf59c9f98fe
                 fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
             })
+            .UseMauiMaps()
             .RegisterDependencies();
 
         return builder.Build();
