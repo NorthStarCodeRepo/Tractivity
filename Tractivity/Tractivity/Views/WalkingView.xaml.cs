@@ -3,6 +3,7 @@ using Tractivity.Common.Environment;
 using Tractivity.Managers;
 using Tractivity.Messaging;
 using Tractivity.Contract.Enums;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace Tractivity.Views;
 
@@ -19,7 +20,11 @@ public partial class WalkingView : ContentPage
         this._environmentManager = environmentManager;
         this._locationManagerFactory = locationManager;
         InitializeComponent();
+
         BindingContext = this;
+
+        Map map = new Map();
+        Content = map;
     }
 
     public ObservableCollection<Label> Locations { get; private set; } = new ObservableCollection<Label>();

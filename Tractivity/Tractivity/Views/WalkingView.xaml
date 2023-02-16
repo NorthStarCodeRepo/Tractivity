@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:Tractivity.Helpers"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              x:Class="Tractivity.Views.WalkingView"
              Title="Walking">
     <ScrollView>
@@ -105,6 +106,7 @@
                 <VerticalStackLayout
                     FlexLayout.Grow="1"
                     BindableLayout.ItemsSource="{Binding Locations}">
+                    <maps:Map x:Name="map" />
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Label
