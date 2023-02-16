@@ -1,8 +1,9 @@
+using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
 using Tractivity.Common.Environment;
+using Tractivity.Contract.Enums;
 using Tractivity.Managers;
 using Tractivity.Messaging;
-using Tractivity.Contract.Enums;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace Tractivity.Views;
@@ -23,7 +24,10 @@ public partial class WalkingView : ContentPage
 
         BindingContext = this;
 
-        Map map = new Map();
+        // Maps: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/map?view=net-maui-7.0
+        Location location = new Location(36.9628066, -122.0194722);
+        MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
+        Map map = new Map(mapSpan);
         Content = map;
     }
 

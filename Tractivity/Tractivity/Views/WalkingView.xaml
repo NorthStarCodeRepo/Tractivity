@@ -106,7 +106,6 @@
                 <VerticalStackLayout
                     FlexLayout.Grow="1"
                     BindableLayout.ItemsSource="{Binding Locations}">
-                    <maps:Map x:Name="map" />
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Label
@@ -115,6 +114,9 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
+            </StackLayout>
+            <StackLayout>
+                <maps:Map x:Name="map" />
             </StackLayout>
         </StackLayout>
     </ScrollView>
