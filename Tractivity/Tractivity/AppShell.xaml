@@ -5,22 +5,69 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Tractivity"
     xmlns:views="clr-namespace:Tractivity.Views"
-    Shell.FlyoutBehavior="Disabled">
-
-    <TabBar>
-        <Tab
-            Title="Home"
-            Route="MainPage"
-            Icon="home_icon.png">
-            <ShellContent 
-                ContentTemplate="{DataTemplate local:MainPage}" />
+    Shell.FlyoutBehavior="Flyout">
+    <FlyoutItem
+        Title="Home"
+        Route="Home"
+        Icon="home_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>
-        <Tab
-            Title="Export"
-            Route="ExportLogs"
-            Icon="attach_email.png">
-            <ShellContent
-                ContentTemplate="{DataTemplate views:ExportLogsView}" />
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Hiking"
+        Route="Hiking"
+        Icon="hiking_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:HikingView}" />
         </Tab>
-    </TabBar>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Sailing"
+        Route="Sailing"
+        Icon="sailing_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:SailingView}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Skiing"
+        Route="Skiing"
+        Icon="skiing_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:SkiingView}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Snowboarding"
+        Route="Snowboarding"
+        Icon="snowboarding_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:SnowboardingView}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Snowshoeing"
+        Route="Snowshoeing"
+        Icon="snowshoeing_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:SnowshoeingView}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Walking"
+        Route="Walking"
+        Icon="walking_icon.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:WalkingView}" />
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Export"
+        Route="ExportLogs"
+        Icon="attach_email.png">
+        <Tab>
+            <ShellContent ContentTemplate="{DataTemplate views:ExportLogsView}" />
+        </Tab>
+    </FlyoutItem>
 </Shell>

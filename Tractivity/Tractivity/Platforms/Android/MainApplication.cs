@@ -9,6 +9,7 @@ using Android.Runtime;
 [assembly: UsesFeature("android.hardware.location.network", Required = false)]
 [assembly: UsesPermission(Manifest.Permission.AccessBackgroundLocation)]
 [assembly: UsesPermission(Manifest.Permission.ForegroundService)]
+[assembly: UsesPermission(Manifest.Permission.ActivityRecognition)]
 
 namespace Tractivity;
 

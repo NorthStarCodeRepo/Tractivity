@@ -1,12 +1,12 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using Tractivity.Common.Environment;
 using Tractivity.Managers;
 using Tractivity.Messaging;
 using Tractivity.Contract.Enums;
 
-namespace Tractivity;
+namespace Tractivity.Views;
 
-public partial class MainPage : ContentPage
+public partial class WalkingView : ContentPage
 {
     private readonly EnvironmentManager _environmentManager;
 
@@ -14,15 +14,7 @@ public partial class MainPage : ContentPage
 
     private int totalLogCounter = 0;
 
-    //private CancellationTokenSource _cancelTokenSource;
-
-    //private bool _isCheckingLocation;
-
-    //private int checkDuration = 3000;
-
-    //private bool isTracking = false;
-
-    public MainPage(EnvironmentManager environmentManager, ILocationManagerFactory locationManager)
+    public WalkingView(EnvironmentManager environmentManager, ILocationManagerFactory locationManager)
     {
         this._environmentManager = environmentManager;
         this._locationManagerFactory = locationManager;
@@ -108,67 +100,4 @@ public partial class MainPage : ContentPage
 
         this._locationManagerFactory.Stop(ServiceType.Walking);
     }
-
-    //private async void BeginLogging(object sender, EventArgs e)
-    //{
-    //    this.isTracking = true;
-
-    //    this.Locations.Add(new Label()
-    //    {
-    //        Text = "Logging Started"
-    //    });
-
-    //    while (this.isTracking)
-    //    {
-    //        try
-    //        {
-    //            _isCheckingLocation = true;
-
-    //            GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-
-    //            _cancelTokenSource = new CancellationTokenSource();
-
-    //            Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-    //            if (location != null)
-    //            {
-    //                this.Locations.Add(new Label()
-    //                {
-    //                    Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}"
-    //                });
-    //            }
-    //        }
-
-    //        // Catch one of the following exceptions:
-    //        //   FeatureNotSupportedException
-    //        //   FeatureNotEnabledException
-    //        //   PermissionException
-    //        catch (Exception ex)
-    //        {
-    //            // Unable to get location
-    //        }
-    //        finally
-    //        {
-    //            _isCheckingLocation = false;
-    //        }
-
-    //        await Task.Delay(this.checkDuration);
-    //    }
-    //}
-
-    //private void StopLogging(object sender, EventArgs e)
-    //{
-    //    this.isTracking = false;
-    //    this.Locations.Clear();
-
-    //    if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
-    //    {
-    //        _cancelTokenSource.Cancel();
-    //    }
-
-    //    this.Locations.Add(new Label()
-    //    {
-    //        Text = "Logging Stopped"
-    //    });
-    //}
 }

@@ -1,22 +1,23 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Hardware;
 using Android.Locations;
 using Android.OS;
+using Android.Runtime;
 using AndroidX.Core.App;
 using Tractivity.Common.Environment;
 using Tractivity.Messaging;
 using AndroidApp = Android.App.Application;
 using Location = Android.Locations.Location;
 
-namespace Tractivity.Platforms.Android.Services
+namespace Tractivity.AppServices
 {
     /// <summary>
     /// https://medium.com/nerd-for-tech/maui-native-mobile-location-updates-444939dff3af
     /// https://stackoverflow.com/questions/73829758/how-to-create-an-android-foreground-service-in-maui
     /// https://stackoverflow.com/questions/71259615/how-to-create-a-background-service-in-net-maui
     /// </summary>
-    [Service]
-    public partial class LocationService : Service, ILocationListener
+    public class LocationService : Service, ILocationService, ILocationListener
     {
         private readonly EnvironmentManager _environmentManager;
 
@@ -30,6 +31,8 @@ namespace Tractivity.Platforms.Android.Services
 
         public LocationService()
         {
+            // Not ideal to new this up but haven't found a good way 
+            // to sort out some DI issues with base services.
             this._environmentManager = new EnvironmentManager();
         }
 
@@ -41,13 +44,14 @@ namespace Tractivity.Platforms.Android.Services
         public override void OnCreate()
         {
             base.OnCreate();
-            this.AndroidInitialize();
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            _androidLocationManager?.RemoveUpdates(this);
+            this._androidLocationManager?.RemoveUpdates(this);
+            
+            // Kill the running service.
             StopSelf();
         }
 
@@ -138,10 +142,10 @@ namespace Tractivity.Platforms.Android.Services
             // Nothing
         }
 
-        protected void AndroidInitialize()
+        protected void Initialize(long minTimeMs, float minDistanceM)
         {
-            _androidLocationManager ??= (LocationManager)AndroidApp.Context.GetSystemService(Context.LocationService);
-
+            this._androidLocationManager ??= (LocationManager)AndroidApp.Context.GetSystemService(Context.LocationService);
+            
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
@@ -161,7 +165,7 @@ namespace Tractivity.Platforms.Android.Services
                     return;
                 }
 
-                _androidLocationManager.RequestLocationUpdates(LocationManager.GpsProvider, 2000, 4, this);
+                _androidLocationManager.RequestLocationUpdates(LocationManager.GpsProvider, minTimeMs, minDistanceM, this);
             });
         }
 

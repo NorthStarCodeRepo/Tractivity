@@ -1,4 +1,5 @@
-﻿using Tractivity.Common.Environment;
+﻿using Tractivity.AppServices;
+using Tractivity.Common.Environment;
 using Tractivity.Managers;
 using Tractivity.Views;
 
@@ -10,8 +11,11 @@ namespace Tractivity
         {
             // Register DI
             builder.Services.AddSingleton<EnvironmentManager>();
-            builder.Services.AddTransient<LocationManager>();
+            builder.Services.AddTransient<ILocationManagerFactory, LocationManagerFactory>();
+            builder.Services.AddTransient<ILocationService, LocationService>();
+            builder.Services.AddSingleton<WalkingService>();
             builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<WalkingView>();
             builder.Services.AddTransient<ExportLogsView>();
         }
     }

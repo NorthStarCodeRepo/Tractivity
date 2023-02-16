@@ -19,7 +19,7 @@
 		<ApplicationIdGuid>97c9fd63-c445-4689-99c4-9e2215cf0162</ApplicationIdGuid>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0.4</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.0.5</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
@@ -50,7 +50,43 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Platforms\iOS\AppServices\WalkingService.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
+	  <Compile Update="Views\SailingView.xaml.cs">
+	    <DependentUpon>SailingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SkiingView.xaml.cs">
+	    <DependentUpon>SkiingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SnowboardingView.xaml.cs">
+	    <DependentUpon>SnowboardingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SnowshoeingView.xaml.cs">
+	    <DependentUpon>SnowshoeingView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\ExportLogsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\HikingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SailingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SkiingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SnowboardingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SnowshoeingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\WalkingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
