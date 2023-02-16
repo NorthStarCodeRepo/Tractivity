@@ -47,7 +47,7 @@ public partial class MainPage : ContentPage
             this.TotalLogCount.Text = this.totalLogCounter.ToString();
             this.Locations.Add(new Label()
             {
-                Text = update.Value
+                //Text = update.Value
             });
         });
 

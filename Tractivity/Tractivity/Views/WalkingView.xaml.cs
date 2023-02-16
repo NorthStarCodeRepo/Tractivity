@@ -14,27 +14,29 @@ public partial class WalkingView : ContentPage
 
     private readonly ILocationManagerFactory _locationManagerFactory;
 
-    private int totalLogCounter = 0;
+    private CancellationTokenSource _cancelTokenSource;
+
+    private bool _isCheckingLocation;
+
+    private int logCount = 0;
 
     public WalkingView(EnvironmentManager environmentManager, ILocationManagerFactory locationManager)
     {
         this._environmentManager = environmentManager;
         this._locationManagerFactory = locationManager;
         InitializeComponent();
-
         BindingContext = this;
-
-        // Maps: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/map?view=net-maui-7.0
-        Location location = new Location(36.9628066, -122.0194722);
-        MapSpan mapSpan = new MapSpan(location, 0.01, 0.01);
-        Map map = new Map(mapSpan);
-        Content = map;
     }
 
     public ObservableCollection<Label> Locations { get; private set; } = new ObservableCollection<Label>();
 
-    public void BeginWatchingPosition(object sender, EventArgs e)
+    public async void BeginWatchingPosition(object sender, EventArgs e)
     {
+        PermissionStatus locationAlwaysPermission = await Permissions.RequestAsync<Permissions.LocationAlways>();
+        PermissionStatus sensorPermission = await Permissions.RequestAsync<Permissions.Sensors>();
+
+        await this.LoadPage();
+
         this.Locations.Clear();
 
         this.ActivityMessage.Text = "Logging Started";
@@ -44,17 +46,17 @@ public partial class WalkingView : ContentPage
         // Subscribe to location updates
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
         {
-            this.totalLogCounter += 1;
-            this.TotalLogCount.Text = this.totalLogCounter.ToString();
-            this.Locations.Add(new Label()
+            this.logCount++;
+            this.ActivityMessage.Text = $"Logged {this.logCount} times";
+            this.map.Pins.Add(new Microsoft.Maui.Controls.Maps.Pin()
             {
-                Text = update.Value
+                Location = new Location(update.Latitude, update.Longitude)
             });
         });
 
         MessagingCenter.Subscribe<StepDetectorUpdateEvent>(this, "step-detector-updates", (update) =>
         {
-            this.StepDetectorMessage.Text = $"{update.Value}";
+            this.StepDetectorMessage.Text = $"{update.Value} steps taken";
         });
     }
 
@@ -83,8 +85,6 @@ public partial class WalkingView : ContentPage
     {
         this.Locations.Clear();
         this.ActivityMessage.Text = "All logged data cleared.";
-        this.totalLogCounter = 0;
-        this.TotalLogCount.Text = this.totalLogCounter.ToString();
 
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
@@ -108,5 +108,76 @@ public partial class WalkingView : ContentPage
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
         this._locationManagerFactory.Stop(ServiceType.Walking);
+    }
+
+    private void CancelRequest()
+    {
+        if (_isCheckingLocation && _cancelTokenSource != null && _cancelTokenSource.IsCancellationRequested == false)
+            _cancelTokenSource.Cancel();
+    }
+
+    private async Task<Location> GetCurrentLocation()
+    {
+        Location location = null;
+
+        try
+        {
+            _isCheckingLocation = true;
+
+            GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+
+            _cancelTokenSource = new CancellationTokenSource();
+
+            location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+        }
+
+        // Catch one of the following exceptions:
+        //   FeatureNotSupportedException
+        //   FeatureNotEnabledException
+        //   PermissionException
+        catch (Exception ex)
+        {
+            // Unable to get location
+        }
+        finally
+        {
+            _isCheckingLocation = false;
+        }
+
+        return location;
+    }
+
+    private async Task LoadPage()
+    {
+        try
+        {
+            Location location = await this.GetCurrentLocation();
+
+            if (location != null)
+            {
+                // Maps: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/map?view=net-maui-7.0
+                Map map = new Map();
+                map.IsShowingUser = true;
+                Location pinLocation = new Location(location.Latitude, location.Longitude);
+                MapSpan mapSpan = new MapSpan(pinLocation, 0.01, 0.01);
+                this.map = map;
+            }
+        }
+        catch (FeatureNotSupportedException fnsEx)
+        {
+            // Handle not supported on device exception
+        }
+        catch (FeatureNotEnabledException fneEx)
+        {
+            // Handle not enabled on device exception
+        }
+        catch (PermissionException pEx)
+        {
+            // Handle permission exception
+        }
+        catch (Exception ex)
+        {
+            // Unable to get location
+        }
     }
 }

@@ -5,16 +5,27 @@
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              x:Class="Tractivity.Views.WalkingView"
              Title="Walking">
-    <ScrollView>
-        <StackLayout>
-            <Grid
+    <FlexLayout Direction="Column">
+        <StackLayout HeightRequest="550">
+            <maps:Map x:Name="map" />
+        </StackLayout>
+        <StackLayout FlexLayout.Grow="1">
+            <Label Text="Messages"></Label>
+            <Label
+                x:Name="ActivityMessage"
+                Padding="10"></Label>
+            <Label
+                x:Name="StepDetectorMessage"
+                Padding="10"></Label>
+        </StackLayout>
+        <Grid
             RowDefinitions="1*, 1*"
             ColumnDefinitions="1*,1*"
             RowSpacing="10"
             ColumnSpacing="6"
             Padding="10"
             BackgroundColor="LightGray">
-                <Button
+            <Button
                 Text="Start"
                 FontAttributes="Bold"
                 Grid.Row="0"
@@ -24,14 +35,14 @@
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                    <Button.ImageSource>
-                        <FontImageSource
+                <Button.ImageSource>
+                    <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Play_arrow}"
                             Size="25" />
-                    </Button.ImageSource>
-                </Button>
-                <Button
+                </Button.ImageSource>
+            </Button>
+            <Button
                 Text="Stop"
                 FontAttributes="Bold"
                 Grid.Row="0"
@@ -41,14 +52,14 @@
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                    <Button.ImageSource>
-                        <FontImageSource
+                <Button.ImageSource>
+                    <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Stop}"
                             Size="25" />
-                    </Button.ImageSource>
-                </Button>
-                <Button
+                </Button.ImageSource>
+            </Button>
+            <Button
                 Text="Reset"
                 FontAttributes="Bold"
                 Grid.Row="1"
@@ -58,14 +69,14 @@
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                    <Button.ImageSource>
-                        <FontImageSource
+                <Button.ImageSource>
+                    <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Delete}"
                             Size="25" />
-                    </Button.ImageSource>
-                </Button>
-                <Button
+                </Button.ImageSource>
+            </Button>
+            <Button
                 Text="View"
                 FontAttributes="Bold"
                 Grid.Row="1"
@@ -75,51 +86,15 @@
                 HorizontalOptions="Fill"
                 Padding="50,10,50,10"
                 MaximumWidthRequest="100">
-                    <Button.ImageSource>
-                        <FontImageSource
+                <Button.ImageSource>
+                    <FontImageSource
                             FontFamily="MaterialIcons"
                             Glyph="{x:Static helpers:IconFont.Read_more}"
                             Size="25" />
-                    </Button.ImageSource>
-                </Button>
-            </Grid>
-            <StackLayout>
-                <Label
-                x:Name="ActivityMessage"
-                Padding="10"></Label>
-                <Label
-                    Text="Total Steps"
-                    Padding="10">
-                </Label>
-                <Label
-                    x:Name="StepDetectorMessage"
-                    Padding="10">
-                </Label>
-                <Label
-                Text="Total Logged Locations"
-                Padding="10"></Label>
-                <Label
-                x:Name="TotalLogCount"
-                Padding="10"></Label>
-            </StackLayout>
-            <StackLayout>
-                <VerticalStackLayout
-                    FlexLayout.Grow="1"
-                    BindableLayout.ItemsSource="{Binding Locations}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Label
-                                Padding="10"
-                                Text="{Binding Text}"></Label>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
-            </StackLayout>
-            <StackLayout>
-                <maps:Map x:Name="map" />
-            </StackLayout>
-        </StackLayout>
-    </ScrollView>
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+    </FlexLayout>
 </ContentPage>
     
     

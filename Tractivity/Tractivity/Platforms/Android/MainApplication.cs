@@ -10,6 +10,8 @@ using Android.Runtime;
 [assembly: UsesPermission(Manifest.Permission.AccessBackgroundLocation)]
 [assembly: UsesPermission(Manifest.Permission.ForegroundService)]
 [assembly: UsesPermission(Manifest.Permission.ActivityRecognition)]
+[assembly: UsesPermission(Manifest.Permission.BodySensors)]
+[assembly: UsesPermission(Manifest.Permission.BodySensorsBackground)]
 [assembly: UsesPermission(Manifest.Permission.WriteExternalStorage)]
 
 namespace Tractivity;
