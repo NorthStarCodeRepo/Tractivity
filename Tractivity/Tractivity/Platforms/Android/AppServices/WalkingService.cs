@@ -17,6 +17,11 @@ namespace Tractivity.AppServices
         public WalkingService()
         {
             this.Initialize(2000, 4);
+        }
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
             this.BeginStepTracking();
         }
 

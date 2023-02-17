@@ -2,21 +2,20 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:Tractivity.Helpers"
-             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              x:Class="Tractivity.Views.WalkingView"
              Title="Walking">
     <FlexLayout Direction="Column">
-        <StackLayout HeightRequest="550">
-            <maps:Map x:Name="map" />
-        </StackLayout>
+        <StackLayout HeightRequest="550" x:Name="MapContainer"></StackLayout>
         <StackLayout FlexLayout.Grow="1">
             <Label Text="Messages"></Label>
             <Label
                 x:Name="ActivityMessage"
                 Padding="10"></Label>
+            <Label Text="Steps Taken"></Label>
             <Label
                 x:Name="StepDetectorMessage"
-                Padding="10"></Label>
+                Padding="10"
+                Text="0"></Label>
         </StackLayout>
         <Grid
             RowDefinitions="1*, 1*"
