@@ -1,9 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Hardware;
 using Android.Locations;
 using Android.OS;
-using Android.Runtime;
 using AndroidX.Core.App;
 using Tractivity.Common.Environment;
 using Tractivity.Messaging;
@@ -31,7 +29,7 @@ namespace Tractivity.AppServices
 
         public LocationService()
         {
-            // Not ideal to new this up but haven't found a good way 
+            // Not ideal to new this up but haven't found a good way
             // to sort out some DI issues with base services.
             this._environmentManager = new EnvironmentManager();
         }
@@ -50,7 +48,7 @@ namespace Tractivity.AppServices
         {
             base.OnDestroy();
             this._androidLocationManager?.RemoveUpdates(this);
-            
+
             // Kill the running service.
             StopSelf();
         }
@@ -75,7 +73,8 @@ namespace Tractivity.AppServices
 
                     var message = new LocationUpdateEvent()
                     {
-                        Value = locations[0]
+                        Latitude = location.Latitude,
+                        Longitude = location.Longitude
                     };
 
                     // Publish a message to any listeners
@@ -145,7 +144,7 @@ namespace Tractivity.AppServices
         protected void Initialize(long minTimeMs, float minDistanceM)
         {
             this._androidLocationManager ??= (LocationManager)AndroidApp.Context.GetSystemService(Context.LocationService);
-            
+
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();

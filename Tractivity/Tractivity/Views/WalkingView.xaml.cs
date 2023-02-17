@@ -1,8 +1,10 @@
+using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
 using Tractivity.Common.Environment;
+using Tractivity.Contract.Enums;
 using Tractivity.Managers;
 using Tractivity.Messaging;
-using Tractivity.Contract.Enums;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace Tractivity.Views;
 
@@ -12,19 +14,65 @@ public partial class WalkingView : ContentPage
 
     private readonly ILocationManagerFactory _locationManagerFactory;
 
-    private int totalLogCounter = 0;
+    private Map _walkingMap;
+
+    private int logCount = 0;
 
     public WalkingView(EnvironmentManager environmentManager, ILocationManagerFactory locationManager)
     {
+        InitializeComponent();
         this._environmentManager = environmentManager;
         this._locationManagerFactory = locationManager;
-        InitializeComponent();
         BindingContext = this;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        PermissionStatus locationAlwaysPermission = await Permissions.RequestAsync<Permissions.LocationAlways>();
+        PermissionStatus sensorPermission = await Permissions.RequestAsync<Permissions.Sensors>();
+
+        try
+        {
+            Location location = await Geolocation.Default.GetLastKnownLocationAsync();
+
+            if (location != null)
+            {
+                // Maps: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/map?view=net-maui-7.0
+                Location pinLocation = new Location(location.Latitude, location.Longitude);
+                MapSpan mapSpan = new MapSpan(pinLocation, 0.01, 0.01);
+             
+                this._walkingMap = new Map(mapSpan)
+                {
+                    IsShowingUser = true,
+                    MapType = MapType.Hybrid
+                };
+
+                this.MapContainer.Add(this._walkingMap);
+            }
+        }
+        catch (FeatureNotSupportedException fnsEx)
+        {
+            // Handle not supported on device exception
+        }
+        catch (FeatureNotEnabledException fneEx)
+        {
+            // Handle not enabled on device exception
+        }
+        catch (PermissionException pEx)
+        {
+            // Handle permission exception
+        }
+        catch (Exception ex)
+        {
+            // Unable to get location
+        }
     }
 
     public ObservableCollection<Label> Locations { get; private set; } = new ObservableCollection<Label>();
 
-    public void BeginWatchingPosition(object sender, EventArgs e)
+    public async void BeginWatchingPosition(object sender, EventArgs e)
     {
         this.Locations.Clear();
 
@@ -35,17 +83,23 @@ public partial class WalkingView : ContentPage
         // Subscribe to location updates
         MessagingCenter.Subscribe<LocationUpdateEvent>(this, "location-updates", (update) =>
         {
-            this.totalLogCounter += 1;
-            this.TotalLogCount.Text = this.totalLogCounter.ToString();
-            this.Locations.Add(new Label()
+            this.logCount++;
+            this.ActivityMessage.Text = $"Logged {this.logCount} times";
+
+            Location pinLocation = new Location(update.Latitude, update.Longitude);
+            MapSpan mapSpan = new MapSpan(pinLocation, 0.01, 0.01);
+            this._walkingMap.MoveToRegion(mapSpan);
+
+            this._walkingMap.Pins.Add(new Microsoft.Maui.Controls.Maps.Pin()
             {
-                Text = update.Value
+                Label = "Log",
+                Location = new Location(update.Latitude, update.Longitude)
             });
         });
 
         MessagingCenter.Subscribe<StepDetectorUpdateEvent>(this, "step-detector-updates", (update) =>
         {
-            this.StepDetectorMessage.Text = $"{update.Value}";
+            this.StepDetectorMessage.Text = $"{update.Value} steps taken";
         });
     }
 
@@ -74,8 +128,7 @@ public partial class WalkingView : ContentPage
     {
         this.Locations.Clear();
         this.ActivityMessage.Text = "All logged data cleared.";
-        this.totalLogCounter = 0;
-        this.TotalLogCount.Text = this.totalLogCounter.ToString();
+        this.logCount = 0;
 
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 

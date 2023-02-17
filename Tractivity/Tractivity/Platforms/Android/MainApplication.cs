@@ -10,16 +10,19 @@ using Android.Runtime;
 [assembly: UsesPermission(Manifest.Permission.AccessBackgroundLocation)]
 [assembly: UsesPermission(Manifest.Permission.ForegroundService)]
 [assembly: UsesPermission(Manifest.Permission.ActivityRecognition)]
+[assembly: UsesPermission(Manifest.Permission.BodySensors)]
+[assembly: UsesPermission(Manifest.Permission.BodySensorsBackground)]
+[assembly: UsesPermission(Manifest.Permission.WriteExternalStorage)]
 
 namespace Tractivity;
 
 [Application]
 public class MainApplication : MauiApplication
 {
-	public MainApplication(IntPtr handle, JniHandleOwnership ownership)
-		: base(handle, ownership)
-	{
-	}
+    public MainApplication(IntPtr handle, JniHandleOwnership ownership)
+        : base(handle, ownership)
+    {
+    }
 
-	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+    protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 }

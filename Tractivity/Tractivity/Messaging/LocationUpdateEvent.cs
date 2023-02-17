@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tractivity.Messaging
+﻿namespace Tractivity.Messaging
 {
     public class LocationUpdateEvent
     {
-        public string Value { get; set; }
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
     }
 }
