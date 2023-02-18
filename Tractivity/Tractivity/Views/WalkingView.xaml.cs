@@ -37,11 +37,11 @@ public partial class WalkingView : ContentPage
         {
             Location location = await Geolocation.Default.GetLastKnownLocationAsync();
 
-            if (location != null)
+            if (location != null && this._walkingMap == null)
             {
                 // Maps: https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/map?view=net-maui-7.0
                 Location pinLocation = new Location(location.Latitude, location.Longitude);
-                MapSpan mapSpan = new MapSpan(pinLocation, 0.01, 0.01);
+                MapSpan mapSpan = new MapSpan(pinLocation, 0.001, 0.001);
              
                 this._walkingMap = new Map(mapSpan)
                 {
@@ -152,5 +152,10 @@ public partial class WalkingView : ContentPage
         MessagingCenter.Unsubscribe<LocationUpdateEvent>(this, "location-updates");
 
         this._locationManagerFactory.Stop(ServiceType.Walking);
+    }
+
+    private void UpdateSettings(object sender, EventArgs e)
+    {
+
     }
 }

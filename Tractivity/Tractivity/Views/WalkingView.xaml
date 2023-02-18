@@ -5,17 +5,17 @@
              x:Class="Tractivity.Views.WalkingView"
              Title="Walking">
     <FlexLayout Direction="Column">
-        <StackLayout HeightRequest="550" x:Name="MapContainer"></StackLayout>
+        <StackLayout HeightRequest="450" x:Name="MapContainer"></StackLayout>
         <StackLayout FlexLayout.Grow="1">
             <Label Text="Messages"></Label>
             <Label
                 x:Name="ActivityMessage"
                 Padding="10"></Label>
-            <Label Text="Steps Taken"></Label>
-            <Label
-                x:Name="StepDetectorMessage"
-                Padding="10"
-                Text="0"></Label>
+            <Grid RowDefinitions="Auto" ColumnDefinitions="*,*">
+                <Label Text="Steps Taken" Grid.Column="0" FontSize="20"></Label>
+                <Label x:Name="StepDetectorMessage" Padding="10"
+                Text="0" Grid.Column="1" FontSize="30"></Label>
+            </Grid>
         </StackLayout>
         <Grid
             RowDefinitions="1*, 1*"
